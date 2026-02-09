@@ -2,7 +2,7 @@
 # Python dependencies for the Fragments of Hope coral reef monitoring API
 
 # Core Framework
-fastapi==0.109.0
+fastapi==0.109.1  # Updated from 0.109.0 to fix ReDoS vulnerability
 uvicorn[standard]==0.27.0
 pydantic==2.5.3
 pydantic-settings==2.1.0
@@ -18,8 +18,8 @@ shapely==2.0.2
 pyproj==3.6.1
 
 # API and Serialization
-python-multipart==0.0.6
-python-jose[cryptography]==3.3.0
+python-multipart==0.0.22  # Updated from 0.0.6 to fix multiple vulnerabilities (ReDoS, DoS, arbitrary file write)
+python-jose[cryptography]==3.4.0  # Updated from 3.3.0 to fix algorithm confusion vulnerability
 passlib[bcrypt]==1.7.4
 python-dotenv==1.0.0
 
