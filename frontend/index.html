@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOH Coral Reef Data Viewer</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>🐠 Fragments of Hope - Coral Reef Data Viewer</h1>
+        <p>Interactive geospatial monitoring system for coral reef restoration</p>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="sidebar-section">
+                <h2>Data Layers</h2>
+                <div id="layer-controls">
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="sites-layer" checked>
+                        <span class="layer-icon site-icon">📍</span>
+                        Monitoring Sites
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="mpa-layer" checked>
+                        <span class="layer-icon mpa-icon">🛡️</span>
+                        Marine Protected Areas
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="outplanting-layer">
+                        <span class="layer-icon outplanting-icon">🪸</span>
+                        Coral Outplanting
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="photomosaic-layer">
+                        <span class="layer-icon photomosaic-icon">📷</span>
+                        Photomosaics
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="photos-layer">
+                        <span class="layer-icon photo-icon">🖼️</span>
+                        Photos
+                    </label>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h2>Search & Filter</h2>
+                <div class="search-box">
+                    <input type="text" id="site-search" placeholder="Search sites...">
+                    <button id="search-btn">Search</button>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="species-filter">Species:</label>
+                    <select id="species-filter">
+                        <option value="">All Species</option>
+                        <option value="Acropora cervicornis">Acropora cervicornis</option>
+                        <option value="Acropora palmata">Acropora palmata</option>
+                        <option value="Orbicella faveolata">Orbicella faveolata</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-from">Date From:</label>
+                    <input type="date" id="date-from">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-to">Date To:</label>
+                    <input type="date" id="date-to">
+                </div>
+                
+                <button id="apply-filters" class="btn-primary">Apply Filters</button>
+                <button id="clear-filters" class="btn-secondary">Clear Filters</button>
+            </div>
+            
+            <div class="sidebar-section">
+                <h2>Spatial Search</h2>
+                <div class="spatial-search">
+                    <label>Find sites within radius:</label>
+                    <input type="number" id="search-radius" placeholder="Radius (meters)" value="10000">
+                    <button id="spatial-search-btn" class="btn-primary">Search Map Center</button>
+                    <p class="help-text">Click map to set center point</p>
+                </div>
+            </div>
+            
+            <div class="sidebar-section" id="info-panel">
+                <h2>Information</h2>
+                <div id="info-content">
+                    <p class="info-placeholder">Click on a feature to see details</p>
+                </div>
+            </div>
+            
+            <div class="sidebar-section" id="chart-panel" style="display: none;">
+                <h2>Temperature Data</h2>
+                <canvas id="temperature-chart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Map Container -->
+        <div id="map"></div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading data...</p>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Custom JavaScript Modules -->
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/map.js"></script>
+    
+    <script>
+        // Initialize the application when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('FOH Coral Reef Data Viewer initialized');
+            initializeMap();
+        });
+    </script>
+</body>
+</html>
