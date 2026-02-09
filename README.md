@@ -1,151 +1,51 @@
-# FOH - Fragments of Hope Data Organization
+## PostgreSQL/PostGIS Database Setup
 
-Scripts and tools for organizing Fragments of Hope marine conservation data on Synology NAS.
+### Why Use PostgreSQL + PostGIS for Geospatial Coral Reef Data
+PostgreSQL is a powerful, open-source relational database system that can handle a variety of data types. When combined with PostGIS, it becomes a robust platform for storing and analyzing geospatial data, making it particularly well-suited for coral reef data that involves geographic coordinates and spatial analysis.
 
-## 📁 Folder Structure
+### How to Install PostgreSQL on Synology NAS
+1. Open the Package Center on your Synology NAS.
+2. Search for "PostgreSQL" and select the appropriate package.
+3. Click "Install" and follow the on-screen instructions to complete the installation.
 
-This repository helps you create and maintain the following folder structure on your Synology NAS:
+### How to Access the Database
+- **pgAdmin**: A graphical interface to manage PostgreSQL databases. Download it from the official pgAdmin website.
+- **SSH**: Use `ssh` to connect to your Synology NAS and access PostgreSQL via command line.
+- **Python**: Use libraries like `psycopg2` or `SQLAlchemy` to connect to the PostgreSQL database from a Python application.
+- **Network Access**: Ensure your Synology NAS is configured to allow connections over the network.
+- **Remote Access**: Configure PostgreSQL to accept remote connections by editing the `postgresql.conf` and `pg_hba.conf` files accordingly.
 
-```
-FOH Data/
-└── MPAS/
-    ├── Inner Cayes/
-    │   ├── Salt Water Caye/
-    │   │   ├── Temperature Data/
-    │   │   │   ├── 2020/
-    │   │   │   ├── 2021/
-    │   │   │   └── ...
-    │   │   ├── Growth Data/
-    │   │   │   └── [years]
-    │   │   ├── Water Quality Data/
-    │   │   │   └── [years]
-    │   │   ├── Survey Data/
-    │   │   │   └── [years]
-    │   │   ├── Photos/
-    │   │   ├── Videos/
-    │   │   ├── Reports/
-    │   │   └── Field Notes/
-    │   └── [Other Sites]/
-    ├── North Cayes/
-    │   └── [Sites with same structure]
-    └── [Other MPA Areas]/
-```
+### Future Plans for Geospatial Frontend
+We plan to develop a user-friendly geospatial frontend that will allow researchers and users to visualize and interact with the coral reef data seamlessly.
 
-## 🛠️ Scripts
+### Database Schema Overview
+- **Sites**: Contains geographical coordinates of various coral reef sites.
+- **MPAs (Marine Protected Areas)**: Information about protected areas in the database.
+- **Temperature Data**: Records of sea temperatures relevant to coral health.
+- **Growth Data**: Data tracking coral growth over time.
+- **Surveys**: Information collected during various research surveys.
+- **Photos with Geotags**: Visual data associated with specific locations, including geospatial information.
 
-### 1. `create_folder_structure.py`
-Creates the complete folder hierarchy on your NAS.
-
-**Features:**
-- Dry-run mode to preview before creating
-- Configurable areas, sites, and data types
-- Automatic year folder creation for time-series data
-
-**Usage:**
-```bash
-python3 create_folder_structure.py
-```
-
-**Configuration:**
-Edit the script to customize:
-- `BASE_PATH` - Your NAS mount point
-- `AREAS` - Dictionary of MPA areas and their sites
-- `DATA_TYPES` - List of data categories
-- `START_YEAR` / `END_YEAR` - Year range
-
-### 2. `transfer_data.py`
-Interactive tool to transfer data from USB drives to the correct NAS locations.
-
-**Features:**
-- Automatic metadata detection from filenames
-- Interactive confirmation and correction
-- Copy or move modes
-- Creates destination folders automatically
-
-**Usage:**
-```bash
-python3 transfer_data.py
-```
-
-**Configuration:**
-- `BASE_PATH` - Your NAS MPAS folder
-- `USB_MOUNT` - Your USB drive mount point
-
-## 🚀 Getting Started
-
-### 1. Clone this repository
-```bash
-git clone https://github.com/kylonnealbze/FOH.git
-cd FOH
-```
-
-### 2. Customize the scripts
-Edit both Python files to add your specific:
-- MPA areas (Inner Cayes, North Cayes, etc.)
-- Site names
-- NAS mount paths
-
-### 3. Create the folder structure
-```bash
-python3 create_folder_structure.py
-```
-
-### 4. Transfer data from USB
-```bash
-python3 transfer_data.py
-```
-
-## 📝 File Naming Conventions
-
-For best automatic detection, name your files with:
-- **Area**: Include "Inner Cayes", "North Cayes", etc.
-- **Site**: Include site name like "Salt Water Caye"
-- **Data Type**: Include keywords like "temperature", "growth", "survey"
-- **Year**: Include 4-digit year (e.g., 2024)
-
-**Example:** `InnerCayes_SaltWaterCaye_Temperature_2024-03-15.csv`
-
-## 🔧 Customization
-
-### Adding New Areas
-Edit `create_folder_structure.py`:
+### Connection Examples
 ```python
-AREAS = {
-    "Inner Cayes": ["Salt Water Caye", "Your Site Here"],
-    "North Cayes": ["Another Site"],
-    "Your New Area": ["Site 1", "Site 2"],
-}
+import psycopg2
+
+# Connect to the PostgreSQL database
+connection = psycopg2.connect(
+    host="your_host",
+    database="your_db",
+    user="your_user",
+    password="your_password"
+)
 ```
 
-### Adding Data Types
-Edit the `DATA_TYPES` list:
-```python
-DATA_TYPES = [
-    "Temperature Data",
-    "Your New Data Type",
-]
-```
-
-## 📋 Requirements
-
-- Python 3.6+
-- Access to Synology NAS (via SSH or mounted drive)
-- Standard library only (no external dependencies)
-
-## 📚 Related Resources
-
-- [Moving Worlds Experteering Guide](https://www.notion.so/boreal321/Moving-Worlds-Experteering-1ec9b0b409f680aa866dca991f0ed02c)
-- Fragments of Hope Foundation
-
-## 📄 License
-
-MIT License - Feel free to use and modify for your organization.
-
-## 🤝 Contributing
-
-Issues and pull requests welcome! This is a tool for the conservation community.
-
----
-
-**Maintained by:** @kylonnealbze  
-**Organization:** Fragments of Hope Foundation
+### PostGIS Extension Setup
+1. Connect to your PostgreSQL database.
+2. Run the following command to enable PostGIS:
+   ```sql
+   CREATE EXTENSION postgis;
+   ```
+3. Verify PostGIS installation with:
+   ```sql
+   SELECT PostGIS_Version();
+   ```
